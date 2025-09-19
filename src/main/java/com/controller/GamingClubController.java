@@ -37,4 +37,21 @@ public class GamingClubController {
     public ResponseEntity<Recharge> recharge(@PathVariable String memberId, @RequestParam double amount) {
         return ResponseEntity.ok(service.rechargeMember(memberId, amount));
     }
+
+    @GetMapping("/games")
+    public ResponseEntity<List<Game>> getAllGames() {
+        return ResponseEntity.ok(service.getAllGames());
+    }
+
+    @PostMapping("/games")
+    public ResponseEntity<Game> addGame(@Valid @RequestBody Game game) {
+        return ResponseEntity.ok(service.addGame(game));
+    }
+
+    @PatchMapping("/members/{memberId}")
+    public ResponseEntity<Member> updateMember(@PathVariable String memberId,@RequestBody Member updatedFields) {
+        return ResponseEntity.ok(service.updateMember(memberId, updatedFields));
+    }
+
+
 }

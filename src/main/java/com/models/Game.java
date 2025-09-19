@@ -5,6 +5,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document(collection = "games")
 public class Game {
 
@@ -16,9 +19,12 @@ public class Game {
     private String name;
 
     @Positive(message = "Price must be positive")
-    private double price;
+    private double price; // entry fee
 
     private String description;
+
+    // Link to members by their id (acts like a "foreign-key" list)
+    private List<String> registeredMemberIds = new ArrayList<>();
 
     public Game() {}
 
@@ -28,7 +34,7 @@ public class Game {
         this.description = description;
     }
 
-    // getters and setters
+    // getters / setters
     public String getId() { return id; }
 
     public String getName() { return name; }
@@ -39,4 +45,17 @@ public class Game {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public List<String> getRegisteredMemberIds() { return registeredMemberIds; }
+    public void setRegisteredMemberIds(List<String> registeredMemberIds) { this.registeredMemberIds = registeredMemberIds; }
+
+    // helper methods
+    public void addRegisteredMemberId(String memberId) {
+        if (registeredMemberIds == null) registeredMemberIds = new ArrayList<>();
+        if (!registeredMemberIds.contains(memberId)) registeredMemberIds.add(memberId);
+    }
+
+    public boolean isMemberRegistered(String memberId) {
+        return registeredMemberIds != null && registeredMemberIds.contains(memberId);
+    }
 }

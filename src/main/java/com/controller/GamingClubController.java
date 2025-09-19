@@ -21,21 +21,42 @@ public class GamingClubController {
         this.service = service;
     }
 
-    @GetMapping("/members")
-    public ResponseEntity<List<Member>> getAllMembers() {
-        List<Member> members = service.getAllMembers();
-        return ResponseEntity.ok(members);
-    }
-
-    
+    // Members
     @PostMapping("/members")
     public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-        return ResponseEntity.ok(service.addMember(member));
+        return ResponseEntity.ok(service.createMember(member));
     }
 
-    @PostMapping("/members/{memberId}/recharge")
-    public ResponseEntity<Recharge> recharge(@PathVariable String memberId, @RequestParam double amount) {
-        return ResponseEntity.ok(service.rechargeMember(memberId, amount));
+    @GetMapping("/members")
+    public ResponseEntity<List<Member>> getAllMembers() {
+        return ResponseEntity.ok(service.getAllMembers());
+    }
+
+    @GetMapping("/members/{id}")
+    public ResponseEntity<Member> getMemberById(@PathVariable String id) {
+        return ResponseEntity.ok(service.getMemberById(id));
+    }
+
+    // Recharges
+    @PostMapping("/recharges")
+    public ResponseEntity<Recharge> createRecharge(@Valid @RequestBody Recharge recharge) {
+        return ResponseEntity.ok(service.createRecharge(recharge));
+    }
+
+    @GetMapping("/recharges")
+    public ResponseEntity<List<Recharge>> getAllRecharges() {
+        return ResponseEntity.ok(service.getAllRecharges());
+    }
+
+    @GetMapping("/recharges/{id}")
+    public ResponseEntity<Recharge> getRechargeById(@PathVariable String id) {
+        return ResponseEntity.ok(service.getRechargeById(id));
+    }
+
+    // Games
+    @PostMapping("/games")
+    public ResponseEntity<Game> createGame(@Valid @RequestBody Game game) {
+        return ResponseEntity.ok(service.createGame(game));
     }
 
     @GetMapping("/games")
@@ -43,15 +64,14 @@ public class GamingClubController {
         return ResponseEntity.ok(service.getAllGames());
     }
 
-    @PostMapping("/games")
-    public ResponseEntity<Game> addGame(@Valid @RequestBody Game game) {
-        return ResponseEntity.ok(service.addGame(game));
+    @GetMapping("/games/{id}")
+    public ResponseEntity<Game> getGameById(@PathVariable String id) {
+        return ResponseEntity.ok(service.getGameById(id));
     }
 
-    @PatchMapping("/members/{memberId}")
-    public ResponseEntity<Member> updateMember(@PathVariable String memberId,@RequestBody Member updatedFields) {
-        return ResponseEntity.ok(service.updateMember(memberId, updatedFields));
+    // Register member for game (deducts entry fee from member.balance)
+    @PostMapping("/games/{gameId}/register/{memberId}")
+    public ResponseEntity<String> registerForGame(@PathVariable String memberId, @PathVariable String gameId) {
+        return ResponseEntity.ok(service.registerMemberForGame(memberId, gameId));
     }
-
-
 }

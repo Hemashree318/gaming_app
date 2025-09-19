@@ -1,7 +1,8 @@
-package com.example.gamingclub.config;
+package com.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -11,9 +12,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()   // Disable CSRF for testing POST in Thunder Client
-            .authorizeHttpRequests()
-            .anyRequest().permitAll(); // Allow all requests without authentication
+            .csrf(csrf -> csrf.disable())   // disable CSRF for APIs
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()   // allow everything
+            )
+            .httpBasic(Customizer.withDefaults()); // optional (so you can test with curl/Postman)
         return http.build();
     }
 }

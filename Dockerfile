@@ -1,10 +1,13 @@
 # Build stage
 FROM maven:3.9.6-eclipse-temurin-21 AS build
-COPY . .
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21-jdk-jammy
-COPY --from=build /target/ecommerce-app-0.0.1-SNAPSHOT.jar demo.jar
+WORKDIR /app
+COPY --from=build /app/target/gaming-app-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]

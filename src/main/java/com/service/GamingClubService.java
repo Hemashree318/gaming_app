@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GamingClubService {
@@ -38,6 +39,15 @@ public class GamingClubService {
     public Member getMemberById(String id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+    }
+
+    // Login by phoneNumber + password
+    public Member loginMember(String phoneNumber, String password) {
+        Optional<Member> optionalMember = memberRepository.findByPhoneNumber(phoneNumber);
+        if (optionalMember.isPresent() && optionalMember.get().getPassword().equals(password)) {
+            return optionalMember.get();
+        }
+        return null; // login failed
     }
 
     // ------------------- Recharge Methods -------------------
@@ -79,17 +89,7 @@ public class GamingClubService {
                 .orElseThrow(() -> new RuntimeException("Game not found with id: " + id));
     }
 
-    /**
-     * Register a member for a game:
-     *  - checks the member & game exist
-     *  - checks if already registered
-     *  - checks member balance >= entry fee (game.price)
-     *  - deducts the entry fee from member.balance
-     *  - saves both Member and Game
-     *
-     * NOTE: This method is annotated with @Transactional to attempt atomicity; ensure your MongoDB supports transactions
-     * (replica set). If not, you can remove @Transactional and accept a best-effort (two saves) approach.
-     */
+    // ------------------- Register Member for Game -------------------
     @Transactional
     public String registerMemberForGame(String memberId, String gameId) {
         Member member = memberRepository.findById(memberId)
@@ -107,7 +107,7 @@ public class GamingClubService {
             throw new RuntimeException("Insufficient balance to register for game: " + game.getName());
         }
 
-        // deduct fee and save
+        // Deduct entry fee
         member.setBalance(member.getBalance() - fee);
         game.addRegisteredMemberId(memberId);
 

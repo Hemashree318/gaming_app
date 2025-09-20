@@ -18,15 +18,19 @@ public class Member {
     @NotBlank(message = "Phone number cannot be blank")
     private String phoneNumber;
 
+    @NotBlank(message = "Password cannot be blank")
+    private String password; // new field
+
     @Min(value = 0, message = "Balance cannot be less than 0")
     @Max(value = 10000, message = "Balance cannot exceed 10000")
     private double balance;
 
     public Member() {}
 
-    public Member(String name, String phoneNumber, double balance) {
+    public Member(String name, String phoneNumber, String password, double balance) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.password = password;
         this.balance = balance;
     }
 
@@ -38,6 +42,9 @@ public class Member {
 
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
     public double getBalance() { return balance; }
     public void setBalance(double balance) { this.balance = balance; }

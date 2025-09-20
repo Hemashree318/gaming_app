@@ -1,0 +1,47 @@
+.home-container {
+  min-height: calc(100vh - 70px); /* Adjust for navbar height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1e1e2f, #3a3a5c);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-hero {
+  max-width: 800px;
+}
+
+.home-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ff9800;
+}
+
+.home-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  background: #ff9800;
+  color: #1e1e2f;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #ffa733;
+  transform: translateY(-3px);
+}

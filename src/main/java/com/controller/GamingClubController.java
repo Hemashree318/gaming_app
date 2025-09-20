@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class GamingClubController {
 
     private final GamingClubService service;
@@ -21,7 +22,7 @@ public class GamingClubController {
         this.service = service;
     }
 
-    // Members
+    // ------------------- Members -------------------
     @PostMapping("/members")
     public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
         return ResponseEntity.ok(service.createMember(member));
@@ -37,7 +38,20 @@ public class GamingClubController {
         return ResponseEntity.ok(service.getMemberById(id));
     }
 
-    // Recharges
+    // ------------------- Login -------------------
+    // @GetMapping("/members/login")
+    // public ResponseEntity<Member> loginMember(@RequestParam String phoneNumber, @RequestParam String password) {
+    //     // Use the service login method instead of manual stream
+    //     Member member = service.loginMember(phoneNumber, password);
+
+    //     if (member == null) {
+    //         return ResponseEntity.status(401).build(); // Unauthorized
+    //     }
+
+    //     return ResponseEntity.ok(member);
+    // }
+
+    // ------------------- Recharges -------------------
     @PostMapping("/recharges")
     public ResponseEntity<Recharge> createRecharge(@Valid @RequestBody Recharge recharge) {
         return ResponseEntity.ok(service.createRecharge(recharge));
@@ -53,7 +67,7 @@ public class GamingClubController {
         return ResponseEntity.ok(service.getRechargeById(id));
     }
 
-    // Games
+    // ------------------- Games -------------------
     @PostMapping("/games")
     public ResponseEntity<Game> createGame(@Valid @RequestBody Game game) {
         return ResponseEntity.ok(service.createGame(game));
@@ -71,7 +85,8 @@ public class GamingClubController {
 
     // Register member for game (deducts entry fee from member.balance)
     @PostMapping("/games/{gameId}/register/{memberId}")
-    public ResponseEntity<String> registerForGame(@PathVariable String memberId, @PathVariable String gameId) {
+    public ResponseEntity<String> registerForGame(@PathVariable String memberId,
+                                                  @PathVariable String gameId) {
         return ResponseEntity.ok(service.registerMemberForGame(memberId, gameId));
     }
 }
